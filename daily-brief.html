@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Brief - Chris & Ava</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            padding: 20px;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #2a2a2a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffa3 0%, #00d4aa 100%);
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .date {
+            font-size: 1em;
+            color: #888888;
+            font-weight: 400;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .section {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .section-title {
+            font-size: 1.1em;
+            color: #ffffff;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+        
+        .icon-svg {
+            width: 20px;
+            height: 20px;
+            fill: #00ffa3;
+            flex-shrink: 0;
+        }
+        
+        .goal-card {
+            background: #2a2a2a;
+            padding: 20px 24px;
+            border-radius: 14px;
+            border: 1px solid #3a3a3a;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .goal-card:hover {
+            border-color: #00ffa3;
+            background: #333333;
+        }
+        
+        .goal-card.project {
+            border-left: 3px solid #ff6bed;
+        }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .goal-title {
+            font-size: 1.05em;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .goal-type {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        
+        .goal-type.goal {
+            background: rgba(0, 255, 163, 0.15);
+            color: #00ffa3;
+        }
+        
+        .goal-type.project {
+            background: rgba(255, 107, 237, 0.15);
+            color: #ff6bed;
+        }
+        
+        .goal-meta {
+            font-size: 0.875em;
+            color: #666666;
+            margin-bottom: 12px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffa3 0%, #00d4aa 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .task-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .task-item {
+            background: #2a2a2a;
+            padding: 18px 22px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s ease;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .task-item:hover {
+            background: #333333;
+            border-color: #00ffa3;
+            transform: translateX(4px);
+        }
+        
+        .task-item.urgent {
+            border-left: 3px solid #ff3366;
+            background: #3a2a2f;
+        }
+        
+        .task-item.urgent:hover {
+            background: #4a3035;
+            border-color: #ff3366;
+        }
+        
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #444444;
+            border-radius: 7px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #0a0a0a;
+        }
+        
+        .checkbox:hover {
+            border-color: #00ffa3;
+            background: #0f2a1f;
+        }
+        
+        .checkbox.checked {
+            background: #00ffa3;
+            border-color: #00ffa3;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            color: #0a0a0a;
+            font-size: 16px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .task-details {
+            flex: 1;
+        }
+        
+        .task-title {
+            font-size: 1.05em;
+            color: #ffffff;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .task-meta {
+            font-size: 0.875em;
+            color: #666666;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .task-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .task-link {
+            font-size: 0.75em;
+            color: #00ffa3;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge.work {
+            background: rgba(0, 255, 163, 0.15);
+            color: #00ffa3;
+        }
+        
+        .badge.personal {
+            background: rgba(255, 107, 237, 0.15);
+            color: #ff6bed;
+        }
+        
+        .week-preview {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .day-card {
+            background: #2a2a2a;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid #3a3a3a;
+            transition: all 0.2s ease;
+        }
+        
+        .day-card:hover {
+            border-color: #444444;
+            background: #333333;
+        }
+        
+        .day-header {
+            font-weight: 600;
+            color: #00ffa3;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .day-tasks {
+            font-size: 0.9em;
+            color: #888888;
+            line-height: 1.6;
+        }
+        
+        .deadline-item {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-left: 3px solid #ff3366;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .deadline-date {
+            font-weight: 700;
+            color: #ff3366;
+            margin-bottom: 4px;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .deadline-title {
+            color: #ffffff;
+            font-size: 0.95em;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 16px 28px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.2px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffa3 0%, #00d4aa 100%);
+            color: #0a0a0a;
+            box-shadow: 0 4px 20px rgba(0, 255, 163, 0.3);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 30px rgba(0, 255, 163, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .btn-secondary:hover {
+            background: #333333;
+            border-color: #00ffa3;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #555555;
+        }
+        
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: #2a2a2a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 1px solid #3a3a3a;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .header {
+                padding: 28px 24px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .section {
+                padding: 24px 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Daily Brief</h1>
+            <div class="date" id="currentDate">Saturday, February 7, 2026</div>
+        </div>
+        
+        <div class="content">
+            <!-- Upcoming Deadlines -->
+            <div class="section">
+                <div class="section-title">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Upcoming Deadlines
+                </div>
+                <div id="deadlines"></div>
+            </div>
+            
+            <!-- Today's Priorities -->
+            <div class="section">
+                <div class="section-title">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Today's Priorities
+                </div>
+                <div id="todayTasks" class="task-list"></div>
+            </div>
+            
+            <!-- This Week Ahead -->
+            <div class="section">
+                <div class="section-title">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    This Week Ahead
+                </div>
+                <div id="weekPreview" class="week-preview"></div>
+            </div>
+            
+            <!-- Goals & Projects -->
+            <div class="section">
+                <div class="section-title">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Active Goals & Projects
+                </div>
+                <div id="goalsProjects"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="buttons">
+                <a href="tg://resolve?domain=ava_clawdbot_bot" class="btn btn-primary">
+                    Start Daily Debrief
+                </a>
+                <button onclick="exportBackup()" class="btn btn-secondary">
+                    Export Backup
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // This will be populated by the daily brief generator
+        const briefData = {
+  "goals": [
+    {
+      "id": "goal-001",
+      "title": "Example: Modernize IE systems",
+      "description": "Transform institutional effectiveness data systems and reporting",
+      "type": "work",
+      "timeframe": "annual",
+      "startDate": "2026-01-01",
+      "targetDate": "2026-12-31",
+      "status": "active",
+      "progress": 0,
+      "milestones": [
+        {
+          "quarter": "2026-Q1",
+          "description": "Complete IPEDS modernization",
+          "targetDate": "2026-03-31"
+        },
+        {
+          "quarter": "2026-Q2",
+          "description": "Implement automated dashboards",
+          "targetDate": "2026-06-30"
+        }
+      ],
+      "createdAt": "2026-02-07T13:18:00-05:00",
+      "itemType": "goal"
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-001",
+      "title": "Example: Get motorcycle license",
+      "description": "Complete all requirements for motorcycle endorsement",
+      "type": "personal",
+      "timeframe": "quarter",
+      "startDate": "2026-01-01",
+      "targetDate": "2026-03-31",
+      "status": "not-started",
+      "progress": 0,
+      "phases": [
+        {
+          "name": "Written test & permit",
+          "targetDate": "2026-02-28",
+          "status": "pending"
+        },
+        {
+          "name": "Practice riding",
+          "targetDate": "2026-03-15",
+          "status": "pending"
+        },
+        {
+          "name": "Final road test",
+          "targetDate": "2026-03-31",
+          "status": "pending"
+        }
+      ],
+      "createdAt": "2026-02-07T13:18:00-05:00",
+      "itemType": "project"
+    }
+  ],
+  "today": [
+    {
+      "title": "HEI email",
+      "type": "work",
+      "duration": "15 min",
+      "urgent": true,
+      "goalId": null,
+      "projectId": null
+    },
+    {
+      "title": "Daily Debrief with Ava",
+      "type": "work",
+      "time": "End of day",
+      "duration": "10 min",
+      "link": true,
+      "urgent": false
+    }
+  ],
+  "week": [
+    {
+      "day": "Sun, 2/8",
+      "tasks": "No tasks scheduled"
+    },
+    {
+      "day": "Mon, 2/9",
+      "tasks": "No tasks scheduled"
+    },
+    {
+      "day": "Tue, 2/10",
+      "tasks": "IPEDS Executive Summary"
+    },
+    {
+      "day": "Wed, 2/11",
+      "tasks": "Fact book update"
+    },
+    {
+      "day": "Thu, 2/12",
+      "tasks": "No tasks scheduled"
+    },
+    {
+      "day": "Fri, 2/13",
+      "tasks": "No tasks scheduled"
+    }
+  ],
+  "deadlines": [
+    {
+      "date": "Fri, 2/6",
+      "title": "HEI email",
+      "daysUntil": 0
+    },
+    {
+      "date": "Tue, 2/10",
+      "title": "IPEDS Executive Summary",
+      "daysUntil": 4
+    },
+    {
+      "date": "Wed, 2/11",
+      "title": "Fact book update",
+      "daysUntil": 5
+    }
+  ]
+};
+        
+        // Update current date
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+        
+        // Render goals and projects
+        function renderGoalsProjects() {
+            const container = document.getElementById('goalsProjects');
+            
+            const allItems = [
+                ...briefData.goals.map(g => ({ ...g, itemType: 'goal' })),
+                ...briefData.projects.map(p => ({ ...p, itemType: 'project' }))
+            ];
+            
+            if (allItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>No active goals or projects yet. Message Ava to set your first goal!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = allItems.map(item => `
+                <div class="goal-card ${item.itemType}">
+                    <div class="goal-header">
+                        <div class="goal-title">${item.title}</div>
+                        <span class="goal-type ${item.itemType}">${item.itemType}</span>
+                    </div>
+                    <div class="goal-meta">
+                        ${item.type} • ${item.timeframe} • Target: ${formatDate(item.targetDate)}
+                    </div>
+                    ${item.description ? `<div class="goal-meta">${item.description}</div>` : ''}
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${item.progress || 0}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render today's tasks
+        function renderTodayTasks() {
+            const container = document.getElementById('todayTasks');
+            
+            if (briefData.today.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✓</div>
+                        <p>Ready to start your day! Message Ava to add your first tasks.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = briefData.today.map(task => {
+                let linkText = '';
+                if (task.goalId) {
+                    const goal = briefData.goals.find(g => g.id === task.goalId);
+                    if (goal) linkText = `→ ${goal.title}`;
+                } else if (task.projectId) {
+                    const project = briefData.projects.find(p => p.id === task.projectId);
+                    if (project) linkText = `→ ${project.title}`;
+                }
+                
+                return `
+                    <div class="task-item ${task.urgent ? 'urgent' : ''}">
+                        <div class="checkbox"></div>
+                        <div class="task-details">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                <span class="badge ${task.type}">${task.type}</span>
+                                ${task.time ? `<span>• ${task.time}</span>` : ''}
+                                ${task.duration ? `<span>• ${task.duration}</span>` : ''}
+                            </div>
+                            ${linkText ? `<div class="task-link">${linkText}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Render week preview
+        function renderWeekPreview() {
+            const container = document.getElementById('weekPreview');
+            container.innerHTML = briefData.week.map(day => `
+                <div class="day-card">
+                    <div class="day-header">${day.day}</div>
+                    <div class="day-tasks">${day.tasks || 'No tasks scheduled'}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Render deadlines
+        function renderDeadlines() {
+            const container = document.getElementById('deadlines');
+            
+            if (briefData.deadlines.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✓</div>
+                        <p>No upcoming deadlines. You're all clear!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = briefData.deadlines.map(deadline => `
+                <div class="deadline-item">
+                    <div class="deadline-date">${deadline.date}</div>
+                    <div class="deadline-title">${deadline.title}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Format date helper
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Not set';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        // Export backup
+        function exportBackup() {
+            alert('Backup export will be implemented! This will generate a Word doc with all your tasks.');
+        }
+        
+        // Initialize
+        updateDate();
+        renderGoalsProjects();
+        renderTodayTasks();
+        renderWeekPreview();
+        renderDeadlines();
+        
+        // Make checkboxes interactive
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('checkbox')) {
+                e.target.classList.toggle('checked');
+            }
+        });
+    </script>
+</body>
+</html>
