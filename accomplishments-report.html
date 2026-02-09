@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accomplishments Report - Chris Gibbons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        @media screen {
+            body {
+                background: #f5f5f5;
+                padding: 40px 20px;
+            }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: #ffffff;
+            padding: 60px 60px 50px 60px;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #00ffa3 0%, #00d4aa 100%);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+        
+        .date-range {
+            font-size: 1.1em;
+            color: #888888;
+            font-weight: 400;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            border-bottom: 3px solid #f0f0f0;
+        }
+        
+        .stat-card {
+            padding: 40px;
+            text-align: center;
+            border-right: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+        }
+        
+        .stat-card:last-child {
+            border-right: none;
+        }
+        
+        .stat-card:hover {
+            background: #fafafa;
+        }
+        
+        .stat-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: #00ffa3;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 0.95em;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 50px 60px 60px 60px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #00ffa3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-icon {
+            font-size: 1.2em;
+        }
+        
+        .accomplishment-item {
+            background: #fafafa;
+            border-left: 4px solid #00ffa3;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.2s ease;
+        }
+        
+        .accomplishment-item:hover {
+            background: #f0f0f0;
+            transform: translateX(4px);
+        }
+        
+        .accomplishment-title {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        
+        .accomplishment-meta {
+            font-size: 0.9em;
+            color: #666666;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .accomplishment-date {
+            font-weight: 600;
+            color: #00d4aa;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge.work {
+            background: #e3f9f1;
+            color: #00aa77;
+        }
+        
+        .badge.personal {
+            background: #fce8f8;
+            color: #d946a6;
+        }
+        
+        .accomplishment-link {
+            font-size: 0.9em;
+            color: #00aa77;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: #999999;
+        }
+        
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state p {
+            font-size: 1.1em;
+        }
+        
+        .footer {
+            padding: 40px 60px;
+            background: #fafafa;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #666666;
+            font-size: 0.9em;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #1a1a1a;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+        
+        .back-button:hover {
+            background: #00ffa3;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 163, 0.3);
+        }
+        
+        @media print {
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .back-button {
+                display: none;
+            }
+            
+            .accomplishment-item {
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px 35px 30px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 35px 30px 40px 30px;
+            }
+            
+            .footer {
+                padding: 30px 30px;
+            }
+            
+            .stat-card {
+                padding: 30px 20px;
+            }
+            
+            .stat-value {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Accomplishments Report</h1>
+            <div class="date-range">Jan 25, 2026 - Feb 8, 2026</div>
+        </div>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Total Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1</div>
+                <div class="stat-label">Goals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1</div>
+                <div class="stat-label">Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">13.5</div>
+                <div class="stat-label">Hours Invested</div>
+            </div>
+        </div>
+        
+        <div class="content">
+
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">✅</span>
+                    Completed Tasks
+                </h2>
+                
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Complete quarterly enrollment report</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Thu, 2/5</span>
+                        <span class="badge work">work</span>
+                        <span>• 3.5h invested</span>
+                    </div>
+                    <div class="accomplishment-link">→ Example: Modernize IE systems</div>
+                </div>
+                    
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Review and approve budget proposals</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Wed, 2/4</span>
+                        <span class="badge work">work</span>
+                        <span>• 2h invested</span>
+                    </div>
+                    
+                </div>
+                    
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Set up automated data pipeline</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Mon, 2/2</span>
+                        <span class="badge work">work</span>
+                        <span>• 4h invested</span>
+                    </div>
+                    
+                </div>
+                    
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Clean out garage storage</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Sat, 1/31</span>
+                        <span class="badge personal">personal</span>
+                        <span>• 2.5h invested</span>
+                    </div>
+                    
+                </div>
+                    
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Research motorcycle insurance options</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Fri, 1/30</span>
+                        <span class="badge personal">personal</span>
+                        <span>• 1.5h invested</span>
+                    </div>
+                    <div class="accomplishment-link">→ Example: Get motorcycle license</div>
+                </div>
+                    
+            </div>
+
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🎯</span>
+                    Completed Goals
+                </h2>
+                
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Improve data literacy across campus</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Tue, 2/3</span>
+                        <span class="badge work">work</span>
+                        <span>• quarter</span>
+                    </div>
+                </div>
+                
+            </div>
+
+
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">📁</span>
+                    Completed Projects
+                </h2>
+                
+                <div class="accomplishment-item">
+                    <div class="accomplishment-title">Home office setup</div>
+                    <div class="accomplishment-meta">
+                        <span class="accomplishment-date">Sun, 2/1</span>
+                        <span class="badge personal">personal</span>
+                        <span>• month</span>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <a href="daily-brief.html" class="back-button">← Back to Daily Brief</a>
+            <p>Last Updated: Sunday, February 8, 2026 at 7:14 PM</p>
+        </div>
+    </div>
+</body>
+</html>

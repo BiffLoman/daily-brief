@@ -538,15 +538,14 @@
                 <div id="todayTasks" class="task-list"></div>
             </div>
             
-            <!-- Recent Accomplishments (Last 14 Days) -->
-            <div class="section">
-                <div class="section-title">
-                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Accomplishments Report Link -->
+            <div class="section" style="text-align: center; padding: 20px;">
+                <a href="accomplishments-report.html" class="btn" style="display: inline-flex; align-items: center; gap: 10px; max-width: 400px; background: linear-gradient(135deg, #00ffa3 0%, #00d4aa 100%); color: #0a0a0a; font-weight: 600; text-decoration: none; padding: 16px 32px; border-radius: 12px; transition: all 0.2s ease; border: none;">
+                    <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
-                    Recent Accomplishments (Last 14 Days)
-                </div>
-                <div id="accomplishments"></div>
+                    📊 View Accomplishments Report
+                </a>
             </div>
             
             <!-- This Week Ahead -->
@@ -681,63 +680,10 @@
       "urgent": false
     }
   ],
-  "accomplishments": {
-    "tasks": [
-      {
-        "title": "Complete quarterly enrollment report",
-        "type": "work",
-        "completedDate": "2026-02-06",
-        "hoursInvested": 3.5,
-        "goalId": "goal-001"
-      },
-      {
-        "title": "Review and approve budget proposals",
-        "type": "work",
-        "completedDate": "2026-02-05",
-        "hoursInvested": 2
-      },
-      {
-        "title": "Set up automated data pipeline",
-        "type": "work",
-        "completedDate": "2026-02-03",
-        "hoursInvested": 4
-      },
-      {
-        "title": "Clean out garage storage",
-        "type": "personal",
-        "completedDate": "2026-02-01",
-        "hoursInvested": 2.5
-      },
-      {
-        "title": "Research motorcycle insurance options",
-        "type": "personal",
-        "completedDate": "2026-01-31",
-        "hoursInvested": 1.5,
-        "projectId": "project-001"
-      }
-    ],
-    "goals": [
-      {
-        "title": "Improve data literacy across campus",
-        "type": "work",
-        "completedDate": "2026-02-04",
-        "timeframe": "quarter"
-      }
-    ],
-    "projects": [
-      {
-        "title": "Home office setup",
-        "type": "personal",
-        "completedDate": "2026-02-02",
-        "timeframe": "month"
-      }
-    ],
-    "total": 7
-  },
   "week": [
     {
       "day": "Mon, 2/9",
-      "tasks": "IPEDS Executive Summary (1h)"
+      "tasks": "Fact book update (1h)"
     },
     {
       "day": "Tue, 2/10",
@@ -891,92 +837,6 @@
             }).join('');
         }
         
-        // Render accomplishments
-        function renderAccomplishments() {
-            const container = document.getElementById('accomplishments');
-            
-            if (!briefData.accomplishments || briefData.accomplishments.total === 0) {
-                container.innerHTML = `
-                    <div class="accomplishment-empty">
-                        <div class="accomplishment-empty-icon">💪</div>
-                        <p>No recent accomplishments to show. Keep working toward your goals!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            
-            // Completed Tasks
-            if (briefData.accomplishments.tasks.length > 0) {
-                html += '<div class="accomplishment-group">';
-                html += '<div class="accomplishment-group-title">✅ Completed Tasks</div>';
-                briefData.accomplishments.tasks.forEach(task => {
-                    let linkText = '';
-                    if (task.goalId) {
-                        const goal = briefData.goals.find(g => g.id === task.goalId);
-                        if (goal) linkText = `→ ${goal.title}`;
-                    } else if (task.projectId) {
-                        const project = briefData.projects.find(p => p.id === task.projectId);
-                        if (project) linkText = `→ ${project.title}`;
-                    }
-                    
-                    html += `
-                        <div class="accomplishment-item">
-                            <div class="accomplishment-title">${task.title}</div>
-                            <div class="accomplishment-meta">
-                                <span class="accomplishment-date">${formatDate(task.completedDate)}</span>
-                                <span class="badge ${task.type}">${task.type}</span>
-                                ${task.hoursInvested ? `<span>• ${task.hoursInvested}h invested</span>` : ''}
-                            </div>
-                            ${linkText ? `<div class="accomplishment-link">${linkText}</div>` : ''}
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-            
-            // Completed Goals
-            if (briefData.accomplishments.goals.length > 0) {
-                html += '<div class="accomplishment-group">';
-                html += '<div class="accomplishment-group-title">🎯 Completed Goals</div>';
-                briefData.accomplishments.goals.forEach(goal => {
-                    html += `
-                        <div class="accomplishment-item">
-                            <div class="accomplishment-title">${goal.title}</div>
-                            <div class="accomplishment-meta">
-                                <span class="accomplishment-date">${formatDate(goal.completedDate)}</span>
-                                <span class="badge ${goal.type}">${goal.type}</span>
-                                ${goal.timeframe ? `<span>• ${goal.timeframe}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-            
-            // Completed Projects
-            if (briefData.accomplishments.projects.length > 0) {
-                html += '<div class="accomplishment-group">';
-                html += '<div class="accomplishment-group-title">📁 Completed Projects</div>';
-                briefData.accomplishments.projects.forEach(project => {
-                    html += `
-                        <div class="accomplishment-item">
-                            <div class="accomplishment-title">${project.title}</div>
-                            <div class="accomplishment-meta">
-                                <span class="accomplishment-date">${formatDate(project.completedDate)}</span>
-                                <span class="badge ${project.type}">${project.type}</span>
-                                ${project.timeframe ? `<span>• ${project.timeframe}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-            
-            container.innerHTML = html;
-        }
-        
         // Render week preview
         function renderWeekPreview() {
             const container = document.getElementById('weekPreview');
@@ -1026,7 +886,6 @@
         updateDate();
         renderGoalsProjects();
         renderTodayTasks();
-        renderAccomplishments();
         renderWeekPreview();
         renderDeadlines();
         
